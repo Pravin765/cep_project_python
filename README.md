@@ -1,8 +1,8 @@
 # Technical Support for Rural Startups — CEP Report Web App
 
 A Flask + MySQL web application presenting a Community Engagement Program (CEP)
-report documenting technical support visits to micro-enterprises near
-Kolhapur, Maharashtra.
+report documenting technical support visits to micro-enterprises in villages
+near Bhiwandi, Maharashtra.
 
 ## Stack
 - **Backend:** Flask, Flask-SQLAlchemy

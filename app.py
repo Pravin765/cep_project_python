@@ -25,27 +25,6 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "cep-rural-startups-dev-key")
 
-# MySQL connection — override with environment variables in production.
-# DB_USER = os.environ.get("DB_USER", "root")
-# DB_PASSWORD = os.environ.get("DB_PASSWORD", "password")
-# DB_HOST = os.environ.get("DB_HOST", "localhost")
-# DB_PORT = os.environ.get("DB_PORT", "3306")
-# DB_NAME = os.environ.get("DB_NAME", "rural_startups_db")
-# # Aiven (and most managed MySQL hosts) require TLS. PyMySQL 1.1.x understands
-# # the ssl_mode query param directly, so this is a no-op for a local MySQL
-# # that doesn't need TLS unless DB_SSL_MODE is set.
-# DB_SSL_MODE = os.environ.get("DB_SSL_MODE")  # e.g. REQUIRED, VERIFY_CA
-
-# _db_uri = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-# if DB_SSL_MODE:
-#     _db_uri += f"?ssl_mode={DB_SSL_MODE}"
-
-# app.config["SQLALCHEMY_DATABASE_URI"] = _db_uri
-# app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-# app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-# app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024  # 8 MB max upload
-
-# db.init_app(app)
 # MySQL connection — defaults point at the Aiven-hosted MySQL instance;
 # override any of these with environment variables if you ever move to a
 # different database.
