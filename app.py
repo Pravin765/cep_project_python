@@ -6,6 +6,8 @@ Flask + Flask-SQLAlchemy (MySQL via PyMySQL) backend.
 import os
 from datetime import datetime, date, time as dtime
 
+import cloudinary
+import cloudinary.uploader
 from flask import (
     Flask, render_template, request, redirect,
     url_for, flash
@@ -48,6 +50,15 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024  # 8 MB max upload
 
 db.init_app(app)
+
+# Cloudinary — persistent photo storage. Render's local disk is wiped on
+# every restart/redeploy, so uploaded photos can't live there long-term.
+# The SDK auto-configures itself from the CLOUDINARY_URL env var at import
+# time — there's no config(cloudinary_url=...) kwarg, so we just check the
+# env var is present and let cloudinary.config() below confirm it parsed.
+USE_CLOUDINARY = bool(os.environ.get("CLOUDINARY_URL"))
+if USE_CLOUDINARY:
+    cloudinary.config(secure=True)
 
 
 # ------------------------------------------------------------------
@@ -94,16 +105,26 @@ def field_work():
         photo_filename = None
         photo = request.files.get("photo_with_members")
         if photo and photo.filename and allowed_file(photo.filename):
-            photo_filename = secure_filename(photo.filename)
-            # avoid overwriting existing files with the same name
-            base, ext = os.path.splitext(photo_filename)
-            candidate = photo_filename
-            counter = 1
-            while os.path.exists(os.path.join(app.config["UPLOAD_FOLDER"], candidate)):
-                candidate = f"{base}_{counter}{ext}"
-                counter += 1
-            photo_filename = candidate
-            photo.save(os.path.join(app.config["UPLOAD_FOLDER"], photo_filename))
+            if USE_CLOUDINARY:
+                # Cloudinary persists the file and hands back a permanent
+                # HTTPS URL — that URL is what we store, straight into the
+                # photo_filename column.
+                upload_result = cloudinary.uploader.upload(
+                    photo, folder="cep_rural_startups"
+                )
+                photo_filename = upload_result["secure_url"]
+            else:
+                # Local-disk fallback for development without Cloudinary
+                # configured. Not persistent on Render.
+                safe_name = secure_filename(photo.filename)
+                base, ext = os.path.splitext(safe_name)
+                candidate = safe_name
+                counter = 1
+                while os.path.exists(os.path.join(app.config["UPLOAD_FOLDER"], candidate)):
+                    candidate = f"{base}_{counter}{ext}"
+                    counter += 1
+                photo.save(os.path.join(app.config["UPLOAD_FOLDER"], candidate))
+                photo_filename = candidate
 
         try:
             new_entry = Startup(

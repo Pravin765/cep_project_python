@@ -15,7 +15,7 @@
     <div class="notebook-card rounded-lg overflow-hidden flex flex-col">
       <div class="h-44 bg-indigo-900/5 overflow-hidden">
         {% if s.photo_filename %}
-        <img src="{{ url_for('static', filename='uploads/' ~ s.photo_filename) }}" alt="{{ s.startup_name }}" class="w-full h-full object-cover">
+        <img src="{{ s.photo_filename if s.photo_filename.startswith('http') else url_for('static', filename='uploads/' ~ s.photo_filename) }}" alt="{{ s.startup_name }}" class="w-full h-full object-cover">
         {% else %}
         <div class="w-full h-full flex items-center justify-center text-charcoal/30 font-mono text-xs">No photo on file</div>
         {% endif %}
@@ -57,7 +57,7 @@
     <h2 class="font-display text-2xl mb-1">Log a new visit</h2>
     <p class="text-sm text-charcoal/60 mb-8">Fill this in right after leaving the enterprise, while the details are still fresh.</p>
 
-    <form action="{{ url_for('field_work') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+    <form id="field-work-form" action="{{ url_for('field_work') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
 
       <div class="grid sm:grid-cols-2 gap-5">
         <div>
@@ -129,10 +129,36 @@
         </div>
       </div>
 
-      <button type="submit" class="px-6 py-3 rounded-md bg-indigo-900 text-white font-semibold text-sm hover:bg-indigo-800 transition">
-        Save Field Record
+      <button type="submit" id="field-work-submit-btn" class="px-6 py-3 rounded-md bg-indigo-900 text-white font-semibold text-sm hover:bg-indigo-800 transition inline-flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+        <svg id="field-work-spinner" class="hidden animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+        <span id="field-work-submit-text">Save Field Record</span>
       </button>
     </form>
   </div>
 </section>
+
+<script>
+  (function () {
+    var form = document.getElementById("field-work-form");
+    var btn = document.getElementById("field-work-submit-btn");
+    var spinner = document.getElementById("field-work-spinner");
+    var text = document.getElementById("field-work-submit-text");
+
+    form.addEventListener("submit", function (e) {
+      // Block any repeat submit — extra clicks, double Enter, etc. —
+      // while the first request is still in flight.
+      if (form.dataset.submitting === "true") {
+        e.preventDefault();
+        return false;
+      }
+      form.dataset.submitting = "true";
+      btn.disabled = true;
+      spinner.classList.remove("hidden");
+      text.textContent = "Saving…";
+    });
+  })();
+</script>
 {% endblock %}
