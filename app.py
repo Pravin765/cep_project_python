@@ -26,21 +26,44 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "cep-rural-startups-dev-key")
 
 # MySQL connection — override with environment variables in production.
-DB_USER = os.environ.get("DB_USER", "root")
-DB_PASSWORD = os.environ.get("DB_PASSWORD", "password")
-DB_HOST = os.environ.get("DB_HOST", "localhost")
-DB_PORT = os.environ.get("DB_PORT", "3306")
-DB_NAME = os.environ.get("DB_NAME", "rural_startups_db")
-# Aiven (and most managed MySQL hosts) require TLS. PyMySQL 1.1.x understands
-# the ssl_mode query param directly, so this is a no-op for a local MySQL
-# that doesn't need TLS unless DB_SSL_MODE is set.
-DB_SSL_MODE = os.environ.get("DB_SSL_MODE")  # e.g. REQUIRED, VERIFY_CA
+# DB_USER = os.environ.get("DB_USER", "root")
+# DB_PASSWORD = os.environ.get("DB_PASSWORD", "password")
+# DB_HOST = os.environ.get("DB_HOST", "localhost")
+# DB_PORT = os.environ.get("DB_PORT", "3306")
+# DB_NAME = os.environ.get("DB_NAME", "rural_startups_db")
+# # Aiven (and most managed MySQL hosts) require TLS. PyMySQL 1.1.x understands
+# # the ssl_mode query param directly, so this is a no-op for a local MySQL
+# # that doesn't need TLS unless DB_SSL_MODE is set.
+# DB_SSL_MODE = os.environ.get("DB_SSL_MODE")  # e.g. REQUIRED, VERIFY_CA
 
-_db_uri = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-if DB_SSL_MODE:
-    _db_uri += f"?ssl_mode={DB_SSL_MODE}"
+# _db_uri = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+# if DB_SSL_MODE:
+#     _db_uri += f"?ssl_mode={DB_SSL_MODE}"
 
-app.config["SQLALCHEMY_DATABASE_URI"] = _db_uri
+# app.config["SQLALCHEMY_DATABASE_URI"] = _db_uri
+# app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+# app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024  # 8 MB max upload
+
+# db.init_app(app)
+# MySQL connection — defaults point at the Aiven-hosted MySQL instance;
+# override any of these with environment variables if you ever move to a
+# different database.
+DB_USER = os.environ.get("DB_USER", "avnadmin")
+DB_PASSWORD = os.environ.get("DB_PASSWORD", "AVNS_fF_fOUGsItnRLvORNbA")
+DB_HOST = os.environ.get("DB_HOST", "cepproject-cepproject8485202526.c.aivencloud.com")
+DB_PORT = os.environ.get("DB_PORT", "21206")
+DB_NAME = os.environ.get("DB_NAME", "defaultdb")
+# Aiven requires TLS. PyMySQL has no "ssl_mode" connect argument (that's a
+# mysql-connector-python convention) — it takes a plain "ssl" dict instead,
+# which must be passed through SQLAlchemy's connect_args, not the URL.
+DB_SSL_REQUIRED = os.environ.get("DB_SSL_MODE", "REQUIRED").upper() not in ("", "DISABLED", "0", "FALSE")
+
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+)
+if DB_SSL_REQUIRED:
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"connect_args": {"ssl": {}}}
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024  # 8 MB max upload
