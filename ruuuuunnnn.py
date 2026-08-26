@@ -29,5 +29,3 @@ try:
         for row in results:
             print(row)
             
-finally:
-    connection.close()
