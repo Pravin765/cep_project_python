@@ -6,80 +6,48 @@
 
   <p class="font-mono text-xs uppercase tracking-wider text-rust mb-3">Resource Library</p>
   <h1 class="font-display text-3xl sm:text-4xl mb-3">What we actually taught</h1>
-  <p class="text-charcoal/70 max-w-2xl mb-12">The four intervention areas covered on every visit, each with its own downloadable training material, followed by the report's closing summary.</p>
+  <p class="text-charcoal/70 max-w-2xl mb-12">The four intervention areas covered on every visit, followed by the report's closing summary.</p>
 
   <!-- ===================== INTERVENTION AREA CARDS ===================== -->
   <div class="grid sm:grid-cols-2 gap-6 mb-16">
 
-    <div class="notebook-card rounded-lg p-6 flex flex-col">
+    <div class="notebook-card rounded-lg p-6">
       <div class="visit-stamp mb-5"><span class="stamp-month">Area</span><span class="stamp-day">01</span></div>
       <h3 class="font-display text-xl mb-2">Storage &amp; Inventory Management</h3>
-      <p class="text-charcoal/75 leading-relaxed text-sm mb-5">
+      <p class="text-charcoal/75 leading-relaxed text-sm">
         Simple spreadsheet tracking for sales, expenses, and raw materials —
         set up so an owner with no spreadsheet background could keep updating
         it alone after we left.
       </p>
-      <a href="{{ url_for('static', filename='resources/Automated_Inventory_Management.xlsx') }}"
-         download
-         class="mt-auto inline-flex items-center gap-2 self-start px-4 py-2 rounded-md border border-charcoal/20 bg-white text-charcoal font-semibold text-xs hover:border-gold hover:text-rust transition">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
-        </svg>
-        Download Inventory Template (.xlsx)
-      </a>
     </div>
 
-    <div class="notebook-card rounded-lg p-6 flex flex-col">
+    <div class="notebook-card rounded-lg p-6">
       <div class="visit-stamp mb-5"><span class="stamp-month">Area</span><span class="stamp-day">02</span></div>
       <h3 class="font-display text-xl mb-2">Account Management &amp; Payments</h3>
-      <p class="text-charcoal/75 leading-relaxed text-sm mb-5">
+      <p class="text-charcoal/75 leading-relaxed text-sm">
         Setting up and verifying UPI apps (Google Pay / PhonePe), linking
         bank accounts correctly, and testing a first real transaction
         together.
       </p>
-      <a href="{{ url_for('static', filename='resources/UPI_Setup_and_First_Payment_Guide.pptx') }}"
-         download
-         class="mt-auto inline-flex items-center gap-2 self-start px-4 py-2 rounded-md border border-charcoal/20 bg-white text-charcoal font-semibold text-xs hover:border-gold hover:text-rust transition">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
-        </svg>
-        Download UPI Setup Guide (.pptx)
-      </a>
     </div>
 
-    <div class="notebook-card rounded-lg p-6 flex flex-col">
+    <div class="notebook-card rounded-lg p-6">
       <div class="visit-stamp mb-5"><span class="stamp-month">Area</span><span class="stamp-day">03</span></div>
       <h3 class="font-display text-xl mb-2">Cybersecurity Awareness</h3>
-      <p class="text-charcoal/75 leading-relaxed text-sm mb-5">
+      <p class="text-charcoal/75 leading-relaxed text-sm">
         Modules covering OTP scam recognition, safe app-lock practices, and
         the specific risks of using public Wi-Fi for payments.
       </p>
-      <a href="{{ url_for('static', filename='resources/Cybersecurity_Awareness.pptx') }}"
-         download
-         class="mt-auto inline-flex items-center gap-2 self-start px-4 py-2 rounded-md border border-charcoal/20 bg-white text-charcoal font-semibold text-xs hover:border-gold hover:text-rust transition">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
-        </svg>
-        Download Cybersecurity Guide (.pptx)
-      </a>
     </div>
 
-    <div class="notebook-card rounded-lg p-6 flex flex-col">
+    <div class="notebook-card rounded-lg p-6">
       <div class="visit-stamp mb-5"><span class="stamp-month">Area</span><span class="stamp-day">04</span></div>
       <h3 class="font-display text-xl mb-2">Online Discoverability</h3>
-      <p class="text-charcoal/75 leading-relaxed text-sm mb-5">
+      <p class="text-charcoal/75 leading-relaxed text-sm">
         Creating WhatsApp Business catalogues and a Google Business Profile
         with an accurate GPS listing, so customers outside the village could
         find them.
       </p>
-      <a href="{{ url_for('static', filename='resources/Online_Discoverability.pptx') }}"
-         download
-         class="mt-auto inline-flex items-center gap-2 self-start px-4 py-2 rounded-md border border-charcoal/20 bg-white text-charcoal font-semibold text-xs hover:border-gold hover:text-rust transition">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
-        </svg>
-        Download Discoverability Guide (.pptx)
-      </a>
     </div>
   </div>
 

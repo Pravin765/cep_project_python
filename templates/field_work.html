@@ -55,22 +55,18 @@
 
   <div class="notebook-card rounded-lg p-6 sm:p-8 max-w-3xl">
     <h2 class="font-display text-2xl mb-1">Log a new visit</h2>
-    <p class="text-sm text-charcoal/60 mb-1">Fill this in right after leaving the enterprise, while the details are still fresh.</p>
-    <p class="text-xs text-charcoal/50 mb-8"><sup class="text-rust font-semibold">*</sup> Required field. Visit date can't be in the future, and visit time must fall between 9:00 AM and 6:00 PM.</p>
+    <p class="text-sm text-charcoal/60 mb-8">Fill this in right after leaving the enterprise, while the details are still fresh.</p>
 
-    <!-- Client-side validation error banner -->
-    <div id="field-work-error" class="hidden mb-6 px-4 py-3 rounded-md text-sm font-medium border bg-rust/10 text-rust border-rust/30"></div>
-
-    <form id="field-work-form" action="{{ url_for('field_work') }}" method="POST" enctype="multipart/form-data" class="space-y-6" novalidate>
+    <form id="field-work-form" action="{{ url_for('field_work') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
 
       <div class="grid sm:grid-cols-2 gap-5">
         <div>
-          <label for="startup_name" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Startup Name<sup class="text-rust">*</sup></label>
+          <label for="startup_name" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Startup Name</label>
           <input type="text" id="startup_name" name="startup_name" required
                  class="w-full rounded-md border border-charcoal/20 px-3.5 py-2.5 text-sm bg-white focus:border-gold focus:ring-1 focus:ring-gold">
         </div>
         <div>
-          <label for="founder_name" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Founder Name<sup class="text-rust">*</sup></label>
+          <label for="founder_name" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Founder Name</label>
           <input type="text" id="founder_name" name="founder_name" required
                  class="w-full rounded-md border border-charcoal/20 px-3.5 py-2.5 text-sm bg-white focus:border-gold focus:ring-1 focus:ring-gold">
         </div>
@@ -78,12 +74,12 @@
 
       <div class="grid sm:grid-cols-2 gap-5">
         <div>
-          <label for="village" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Village<sup class="text-rust">*</sup></label>
+          <label for="village" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Village</label>
           <input type="text" id="village" name="village" required placeholder="e.g. Vajreshwari, Bhiwandi"
                  class="w-full rounded-md border border-charcoal/20 px-3.5 py-2.5 text-sm bg-white focus:border-gold focus:ring-1 focus:ring-gold">
         </div>
         <div>
-          <label for="address" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Address<sup class="text-rust">*</sup></label>
+          <label for="address" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Address</label>
           <input type="text" id="address" name="address" required
                  class="w-full rounded-md border border-charcoal/20 px-3.5 py-2.5 text-sm bg-white focus:border-gold focus:ring-1 focus:ring-gold">
         </div>
@@ -91,13 +87,13 @@
 
       <div class="grid sm:grid-cols-3 gap-5">
         <div>
-          <label for="date_visited" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Date of Visit<sup class="text-rust">*</sup></label>
+          <label for="date_visited" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Date of Visit</label>
           <input type="date" id="date_visited" name="date_visited" required
                  class="w-full rounded-md border border-charcoal/20 px-3.5 py-2.5 text-sm bg-white focus:border-gold focus:ring-1 focus:ring-gold">
         </div>
         <div>
-          <label for="time_visited" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Time of Visit<sup class="text-rust">*</sup></label>
-          <input type="time" id="time_visited" name="time_visited" required min="09:00" max="18:00"
+          <label for="time_visited" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Time of Visit</label>
+          <input type="time" id="time_visited" name="time_visited" required
                  class="w-full rounded-md border border-charcoal/20 px-3.5 py-2.5 text-sm bg-white focus:border-gold focus:ring-1 focus:ring-gold">
         </div>
         <div>
@@ -108,26 +104,26 @@
       </div>
 
       <div>
-        <label for="technical_support" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Technical Support Provided<sup class="text-rust">*</sup></label>
+        <label for="technical_support" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Technical Support Provided</label>
         <input type="text" id="technical_support" name="technical_support" required
                placeholder="e.g. UPI Setup, WhatsApp Business, Google Business Listing"
                class="w-full rounded-md border border-charcoal/20 px-3.5 py-2.5 text-sm bg-white focus:border-gold focus:ring-1 focus:ring-gold">
       </div>
 
       <div>
-        <label for="statement_before" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Founder Statement (Before Technical Support)<sup class="text-rust">*</sup></label>
+        <label for="statement_before" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Founder Statement (Before Technical Support)</label>
         <textarea id="statement_before" name="statement_before" rows="2" required
                   class="w-full rounded-md border border-charcoal/20 px-3.5 py-2.5 text-sm bg-white focus:border-gold focus:ring-1 focus:ring-gold"></textarea>
       </div>
 
       <div class="grid sm:grid-cols-2 gap-5">
         <div>
-          <label for="before_tech_support" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Status — Before Technical Support<sup class="text-rust">*</sup></label>
+          <label for="before_tech_support" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Status — Before Technical Support</label>
           <textarea id="before_tech_support" name="before_tech_support" rows="3" required
                     class="w-full rounded-md border border-charcoal/20 px-3.5 py-2.5 text-sm bg-white focus:border-gold focus:ring-1 focus:ring-gold"></textarea>
         </div>
         <div>
-          <label for="after_tech_support" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Status — After Technical Support<sup class="text-rust">*</sup></label>
+          <label for="after_tech_support" class="block text-xs font-mono uppercase tracking-wider text-charcoal/60 mb-1.5">Status — After Technical Support</label>
           <textarea id="after_tech_support" name="after_tech_support" rows="3" required
                     class="w-full rounded-md border border-charcoal/20 px-3.5 py-2.5 text-sm bg-white focus:border-gold focus:ring-1 focus:ring-gold"></textarea>
         </div>
@@ -150,48 +146,6 @@
     var btn = document.getElementById("field-work-submit-btn");
     var spinner = document.getElementById("field-work-spinner");
     var text = document.getElementById("field-work-submit-text");
-    var errorBox = document.getElementById("field-work-error");
-    var dateInput = document.getElementById("date_visited");
-    var timeInput = document.getElementById("time_visited");
-
-    // ---- Helpers ----
-    function todayStr() {
-      var d = new Date();
-      var mm = String(d.getMonth() + 1).padStart(2, "0");
-      var dd = String(d.getDate()).padStart(2, "0");
-      return d.getFullYear() + "-" + mm + "-" + dd;
-    }
-
-    // Prevent picking a future date directly in the date picker.
-    dateInput.setAttribute("max", todayStr());
-
-    function showError(message) {
-      errorBox.textContent = message;
-      errorBox.classList.remove("hidden");
-      errorBox.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-
-    function clearError() {
-      errorBox.classList.add("hidden");
-      errorBox.textContent = "";
-    }
-
-    function isDateValid(value) {
-      if (!value) return false;
-      return value <= todayStr();
-    }
-
-    function isTimeValid(value) {
-      if (!value) return false;
-      // value is "HH:MM" (or "HH:MM:SS") in 24-hour format.
-      var parts = value.split(":");
-      var hh = parseInt(parts[0], 10);
-      var mm = parseInt(parts[1], 10);
-      var totalMinutes = hh * 60 + mm;
-      var minMinutes = 9 * 60;   // 9:00 AM
-      var maxMinutes = 18 * 60;  // 6:00 PM
-      return totalMinutes >= minMinutes && totalMinutes <= maxMinutes;
-    }
 
     form.addEventListener("submit", function (e) {
       // Block any repeat submit — extra clicks, double Enter, etc. —
@@ -200,36 +154,6 @@
         e.preventDefault();
         return false;
       }
-
-      clearError();
-
-      // Native required-field / basic HTML5 validity check first.
-      if (!form.checkValidity()) {
-        e.preventDefault();
-        form.reportValidity();
-        return false;
-      }
-
-      // Custom date/time window validation.
-      var dateOk = isDateValid(dateInput.value);
-      var timeOk = isTimeValid(timeInput.value);
-
-      if (!dateOk && !timeOk) {
-        e.preventDefault();
-        showError("Date of visit can't be in the future, and time of visit must be between 9:00 AM and 6:00 PM.");
-        return false;
-      }
-      if (!dateOk) {
-        e.preventDefault();
-        showError("Date of visit can't be in the future — please pick today or an earlier date.");
-        return false;
-      }
-      if (!timeOk) {
-        e.preventDefault();
-        showError("Time of visit must be between 9:00 AM and 6:00 PM.");
-        return false;
-      }
-
       form.dataset.submitting = "true";
       btn.disabled = true;
       spinner.classList.remove("hidden");

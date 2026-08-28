@@ -24,39 +24,9 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
 
-# Field-visit hours: the visit-time field only accepts times within this
-# inclusive window (9:00 AM – 6:00 PM).
-VISIT_TIME_MIN = dtime(9, 0)
-VISIT_TIME_MAX = dtime(18, 0)
-
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "cep-rural-startups-dev-key")
 
-<<<<<<< HEAD
-# MySQL connection — read entirely from environment variables. No real
-# credentials live in this file (or anywhere in git history) so it's safe
-# to keep this repo public. Set these in Render's dashboard under
-# Environment, and in your local shell for development:
-#   DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
-# The non-secret local-dev fallbacks below only kick in if a var is unset;
-# they intentionally point nowhere real.
-DB_USER = os.environ.get("DB_USER", "root")
-DB_PASSWORD = os.environ.get("DB_PASSWORD", "")
-DB_HOST = os.environ.get("DB_HOST", "localhost")
-DB_PORT = os.environ.get("DB_PORT", "3306")
-DB_NAME = os.environ.get("DB_NAME", "rural_startups_db")
-
-if not os.environ.get("DB_PASSWORD"):
-    # Fail loudly rather than silently connecting to a bogus local default —
-    # a blank/placeholder password almost always means the env vars weren't
-    # set on the host (e.g. forgot to add them in Render's dashboard).
-    import warnings
-    warnings.warn(
-        "DB_PASSWORD is not set in the environment. Set DB_USER, DB_PASSWORD, "
-        "DB_HOST, DB_PORT, and DB_NAME as environment variables before running "
-        "in production.", RuntimeWarning
-    )
-=======
 # MySQL connection — defaults point at the Aiven-hosted MySQL instance;
 # override any of these with environment variables if you ever move to a
 # different database.
@@ -65,7 +35,6 @@ DB_PASSWORD = os.environ.get("DB_PASSWORD", "AVNS_fF_fOUGsItnRLvORNbA")
 DB_HOST = os.environ.get("DB_HOST", "cepproject-cepproject8485202526.c.aivencloud.com")
 DB_PORT = os.environ.get("DB_PORT", "21206")
 DB_NAME = os.environ.get("DB_NAME", "defaultdb")
->>>>>>> a406f65aef8cbc70158a00892e94a027a33db93b
 # Aiven requires TLS. PyMySQL has no "ssl_mode" connect argument (that's a
 # mysql-connector-python convention) — it takes a plain "ssl" dict instead,
 # which must be passed through SQLAlchemy's connect_args, not the URL.
@@ -109,45 +78,6 @@ def parse_time(value: str) -> dtime:
     return datetime.strptime(value, fmt).time()
 
 
-def validate_visit_datetime(visit_date: date, visit_time: dtime) -> str | None:
-    """Return an error message if the visit date/time is out of bounds,
-    otherwise None. Mirrors the client-side check in field_work.html so the
-    rule holds even if JS is disabled or bypassed."""
-    if visit_date > date.today():
-        return "Date of visit can't be in the future — please pick today or an earlier date."
-    if not (VISIT_TIME_MIN <= visit_time <= VISIT_TIME_MAX):
-        return "Time of visit must be between 9:00 AM and 6:00 PM."
-    return None
-
-
-<<<<<<< HEAD
-# Server-side mirror of the "required" attributes in field_work.html.
-# The browser check is enough for a normal user, but a direct POST (curl,
-# a disabled-JS browser, or a bypassed form) skips it entirely — this is
-# the check that actually protects the database.
-REQUIRED_TEXT_FIELDS = [
-    ("startup_name", "Startup Name"),
-    ("founder_name", "Founder Name"),
-    ("village", "Village"),
-    ("address", "Address"),
-    ("technical_support", "Technical Support Provided"),
-    ("statement_before", "Founder Statement (Before Technical Support)"),
-    ("before_tech_support", "Status — Before Technical Support"),
-    ("after_tech_support", "Status — After Technical Support"),
-]
-
-
-def validate_required_fields(form) -> str | None:
-    """Return an error message listing every blank required field, or None
-    if they're all filled in. Whitespace-only input counts as blank."""
-    missing = [label for key, label in REQUIRED_TEXT_FIELDS if not form.get(key, "").strip()]
-    if missing:
-        return "Please fill in: " + ", ".join(missing) + "."
-    return None
-
-
-=======
->>>>>>> a406f65aef8cbc70158a00892e94a027a33db93b
 # ------------------------------------------------------------------
 # Routes
 # ------------------------------------------------------------------
@@ -172,26 +102,8 @@ def dashboard():
 @app.route("/field-work", methods=["GET", "POST"])
 def field_work():
     if request.method == "POST":
-<<<<<<< HEAD
-        # Required-field check runs first, before touching the photo or the
-        # database, so a blank/whitespace-only submission never gets this far.
-        required_error = validate_required_fields(request.form)
-        if required_error:
-            flash(required_error, "error")
-            return redirect(url_for("field_work"))
-
         photo_filename = None
         photo = request.files.get("photo_with_members")
-        if photo and photo.filename and not allowed_file(photo.filename):
-            flash(
-                f"'{photo.filename}' wasn't saved — photos must be PNG, JPG, JPEG, GIF, or WEBP. "
-                "The rest of the record was still recorded below; you can add a photo later.",
-                "error",
-            )
-=======
-        photo_filename = None
-        photo = request.files.get("photo_with_members")
->>>>>>> a406f65aef8cbc70158a00892e94a027a33db93b
         if photo and photo.filename and allowed_file(photo.filename):
             if USE_CLOUDINARY:
                 # Cloudinary persists the file and hands back a permanent
@@ -215,22 +127,14 @@ def field_work():
                 photo_filename = candidate
 
         try:
-            visit_date = parse_date(request.form["date_visited"])
-            visit_time = parse_time(request.form["time_visited"])
-
-            validation_error = validate_visit_datetime(visit_date, visit_time)
-            if validation_error:
-                flash(validation_error, "error")
-                return redirect(url_for("field_work"))
-
             new_entry = Startup(
                 startup_name=request.form["startup_name"].strip(),
                 founder_name=request.form["founder_name"].strip(),
                 photo_filename=photo_filename,
                 village=request.form["village"].strip(),
                 address=request.form["address"].strip(),
-                date_visited=visit_date,
-                time_visited=visit_time,
+                date_visited=parse_date(request.form["date_visited"]),
+                time_visited=parse_time(request.form["time_visited"]),
                 technical_support=request.form["technical_support"].strip(),
                 statement_before=request.form["statement_before"].strip(),
                 before_tech_support=request.form["before_tech_support"].strip(),
