@@ -1,0 +1,118 @@
+/* ============================================================
+   CEP Report — Technical Support for Rural Startups
+   Signature styling: "field-notebook stamp" motif
+   ============================================================ */
+
+:root {
+  --cream: #faf6ee;
+  --charcoal: #2a2622;
+  --indigo-deep: #1e1b4b;
+  --gold: #c88a1e;
+  --rust: #b4502e;
+  --leaf: #3f7a4e;
+}
+
+body {
+  background-color: var(--cream);
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  color: var(--charcoal);
+}
+
+.font-display {
+  font-family: "Fraunces", ui-serif, Georgia, serif;
+}
+
+.font-mono-utility {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* Visible keyboard focus everywhere, respecting accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* --- Field-notebook page texture for cards --- */
+.notebook-card {
+  background-color: #fffdf8;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 27px,
+    rgba(43, 38, 34, 0.045) 28px
+  );
+  border: 1px solid rgba(43, 38, 34, 0.12);
+}
+
+/* --- Circular date-stamp badge, like a visit stamp in a field log --- */
+.visit-stamp {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 4.75rem;
+  height: 4.75rem;
+  border-radius: 9999px;
+  border: 2px dashed var(--rust);
+  color: var(--rust);
+  transform: rotate(-6deg);
+  flex-shrink: 0;
+  background-color: rgba(180, 80, 46, 0.05);
+}
+
+.visit-stamp .stamp-month {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.visit-stamp .stamp-day {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* --- Status pill: before / after tone --- */
+.status-before {
+  background-color: rgba(180, 80, 46, 0.1);
+  color: var(--rust);
+  border: 1px solid rgba(180, 80, 46, 0.35);
+}
+
+.status-after {
+  background-color: rgba(63, 122, 78, 0.1);
+  color: var(--leaf);
+  border: 1px solid rgba(63, 122, 78, 0.35);
+}
+
+/* --- Sticky header shadow only once page scrolls --- */
+.header-shadow {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* --- Reduced motion support --- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --- Torn-edge divider used between report sections --- */
+.torn-divider {
+  height: 10px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--cream) 0,
+    var(--cream) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Technical Support for Rural Startups{% endblock %}
+
+{% block content %}
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-14">
+
+  <p class="font-mono text-xs uppercase tracking-wider text-rust mb-3">Report Dashboard</p>
+  <h1 class="font-display text-3xl sm:text-4xl mb-10">Visits at a glance</h1>
+
+  <!-- ===================== METRIC CARDS ===================== -->
+  <div class="grid sm:grid-cols-3 gap-5 mb-12">
+    <div class="notebook-card rounded-lg p-6 flex items-center gap-5">
+      <div class="visit-stamp"><span class="stamp-month">Places</span><span class="stamp-day">{{ places_visited }}</span></div>
+      <div>
+        <p class="font-display text-3xl leading-none">{{ places_visited }}</p>
+        <p class="text-sm text-charcoal/60 mt-1">Places Visited</p>
+      </div>
+    </div>
+    <div class="notebook-card rounded-lg p-6 flex items-center gap-5">
+      <div class="visit-stamp"><span class="stamp-month">Total</span><span class="stamp-day">{{ total_visits }}</span></div>
+      <div>
+        <p class="font-display text-3xl leading-none">{{ total_visits }}</p>
+        <p class="text-sm text-charcoal/60 mt-1">Enterprises Supported</p>
+      </div>
+    </div>
+    <div class="notebook-card rounded-lg p-6 flex items-center gap-5">
+      <div class="visit-stamp"><span class="stamp-month">Region</span><span class="stamp-day">BHW</span></div>
+      <div>
+        <p class="font-display text-xl leading-tight">Bhiwandi</p>
+        <p class="text-sm text-charcoal/60 mt-1">Taluka, Thane District</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== DATA TABLE ===================== -->
+  <div class="notebook-card rounded-lg overflow-hidden">
+    <div class="px-6 py-4 border-b border-charcoal/10 flex items-center justify-between">
+      <h2 class="font-display text-xl">Field Visit Records</h2>
+      <span class="font-mono text-xs text-charcoal/50">{{ total_visits }} record{{ 's' if total_visits != 1 else '' }}</span>
+    </div>
+
+    {% if startups %}
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr class="text-left border-b border-charcoal/10 bg-indigo-900/[0.03]">
+            <th class="px-6 py-3 font-mono text-xs uppercase tracking-wider text-charcoal/60">Startup Name</th>
+            <th class="px-6 py-3 font-mono text-xs uppercase tracking-wider text-charcoal/60">Founder</th>
+            <th class="px-6 py-3 font-mono text-xs uppercase tracking-wider text-charcoal/60">Date &amp; Time</th>
+            <th class="px-6 py-3 font-mono text-xs uppercase tracking-wider text-charcoal/60">Village</th>
+            <th class="px-6 py-3 font-mono text-xs uppercase tracking-wider text-charcoal/60">Technical Support Provided</th>
+            <th class="px-6 py-3 font-mono text-xs uppercase tracking-wider text-charcoal/60">Founder Statement (Before)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in startups %}
+          <tr class="border-b border-charcoal/5 last:border-0 hover:bg-gold/5 align-top">
+            <td class="px-6 py-4 font-semibold whitespace-nowrap">{{ s.startup_name }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ s.founder_name }}</td>
+            <td class="px-6 py-4 font-mono text-xs whitespace-nowrap">
+              {{ s.date_visited.strftime('%d %b %Y') }}<br>
+              <span class="text-charcoal/50">{{ s.time_visited.strftime('%I:%M %p') }}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ s.village }}</td>
+            <td class="px-6 py-4 min-w-[220px]">{{ s.technical_support }}</td>
+            <td class="px-6 py-4 min-w-[240px] text-charcoal/75 italic">&ldquo;{{ s.statement_before }}&rdquo;</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="px-6 py-16 text-center text-charcoal/50">
+      No field visits recorded yet. Add one from the Field Work page.
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
