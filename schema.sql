@@ -42,8 +42,13 @@ VALUES
         'Sunrise Agro Foods',
         'Sunita Patil',
         'team_group_photo.jpg',
+<<<<<<< HEAD
         'Kalher, Bhiwandi',
         'Near Gram Panchayat Office, Kalher, Bhiwandi, Thane, Maharashtra 421302',
+=======
+        'Vadgaon, Kolhapur',
+        'Near Gram Panchayat Office, Vadgaon, Kolhapur, Maharashtra 416003',
+>>>>>>> a406f65aef8cbc70158a00892e94a027a33db93b
         '2025-11-08',
         '11:30:00',
         'UPI Setup, WhatsApp Business, Google Business Listing, Excel Sales/Stock Tracker, Cybersecurity Awareness',
@@ -55,8 +60,13 @@ VALUES
         'Kalamandir Handicrafts',
         'Ramesh Chavan',
         'team_group_photo.jpg',
+<<<<<<< HEAD
         'Anjurdive, Bhiwandi',
         'Main Bazar Road, Anjurdive, Bhiwandi, Thane, Maharashtra 421302',
+=======
+        'Panhala, Kolhapur',
+        'Main Bazar Road, Panhala, Kolhapur, Maharashtra 416201',
+>>>>>>> a406f65aef8cbc70158a00892e94a027a33db93b
         '2025-11-15',
         '10:00:00',
         'UPI Setup, WhatsApp Business Catalogue, Google Business Listing, Fraud Awareness Training',

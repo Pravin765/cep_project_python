@@ -32,6 +32,7 @@ VISIT_TIME_MAX = dtime(18, 0)
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "cep-rural-startups-dev-key")
 
+<<<<<<< HEAD
 # MySQL connection — read entirely from environment variables. No real
 # credentials live in this file (or anywhere in git history) so it's safe
 # to keep this repo public. Set these in Render's dashboard under
@@ -55,6 +56,16 @@ if not os.environ.get("DB_PASSWORD"):
         "DB_HOST, DB_PORT, and DB_NAME as environment variables before running "
         "in production.", RuntimeWarning
     )
+=======
+# MySQL connection — defaults point at the Aiven-hosted MySQL instance;
+# override any of these with environment variables if you ever move to a
+# different database.
+DB_USER = os.environ.get("DB_USER", "avnadmin")
+DB_PASSWORD = os.environ.get("DB_PASSWORD", "AVNS_fF_fOUGsItnRLvORNbA")
+DB_HOST = os.environ.get("DB_HOST", "cepproject-cepproject8485202526.c.aivencloud.com")
+DB_PORT = os.environ.get("DB_PORT", "21206")
+DB_NAME = os.environ.get("DB_NAME", "defaultdb")
+>>>>>>> a406f65aef8cbc70158a00892e94a027a33db93b
 # Aiven requires TLS. PyMySQL has no "ssl_mode" connect argument (that's a
 # mysql-connector-python convention) — it takes a plain "ssl" dict instead,
 # which must be passed through SQLAlchemy's connect_args, not the URL.
@@ -109,6 +120,7 @@ def validate_visit_datetime(visit_date: date, visit_time: dtime) -> str | None:
     return None
 
 
+<<<<<<< HEAD
 # Server-side mirror of the "required" attributes in field_work.html.
 # The browser check is enough for a normal user, but a direct POST (curl,
 # a disabled-JS browser, or a bypassed form) skips it entirely — this is
@@ -134,6 +146,8 @@ def validate_required_fields(form) -> str | None:
     return None
 
 
+=======
+>>>>>>> a406f65aef8cbc70158a00892e94a027a33db93b
 # ------------------------------------------------------------------
 # Routes
 # ------------------------------------------------------------------
@@ -158,6 +172,7 @@ def dashboard():
 @app.route("/field-work", methods=["GET", "POST"])
 def field_work():
     if request.method == "POST":
+<<<<<<< HEAD
         # Required-field check runs first, before touching the photo or the
         # database, so a blank/whitespace-only submission never gets this far.
         required_error = validate_required_fields(request.form)
@@ -173,6 +188,10 @@ def field_work():
                 "The rest of the record was still recorded below; you can add a photo later.",
                 "error",
             )
+=======
+        photo_filename = None
+        photo = request.files.get("photo_with_members")
+>>>>>>> a406f65aef8cbc70158a00892e94a027a33db93b
         if photo and photo.filename and allowed_file(photo.filename):
             if USE_CLOUDINARY:
                 # Cloudinary persists the file and hands back a permanent
