@@ -24,6 +24,11 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
 
+# Field-visit hours: the visit-time field only accepts times within this
+# inclusive window (9:00 AM – 6:00 PM).
+VISIT_TIME_MIN = dtime(9, 0)
+VISIT_TIME_MAX = dtime(18, 0)
+
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "cep-rural-startups-dev-key")
 
@@ -78,6 +83,17 @@ def parse_time(value: str) -> dtime:
     return datetime.strptime(value, fmt).time()
 
 
+def validate_visit_datetime(visit_date: date, visit_time: dtime) -> str | None:
+    """Return an error message if the visit date/time is out of bounds,
+    otherwise None. Mirrors the client-side check in field_work.html so the
+    rule holds even if JS is disabled or bypassed."""
+    if visit_date > date.today():
+        return "Date of visit can't be in the future — please pick today or an earlier date."
+    if not (VISIT_TIME_MIN <= visit_time <= VISIT_TIME_MAX):
+        return "Time of visit must be between 9:00 AM and 6:00 PM."
+    return None
+
+
 # ------------------------------------------------------------------
 # Routes
 # ------------------------------------------------------------------
@@ -127,14 +143,22 @@ def field_work():
                 photo_filename = candidate
 
         try:
+            visit_date = parse_date(request.form["date_visited"])
+            visit_time = parse_time(request.form["time_visited"])
+
+            validation_error = validate_visit_datetime(visit_date, visit_time)
+            if validation_error:
+                flash(validation_error, "error")
+                return redirect(url_for("field_work"))
+
             new_entry = Startup(
                 startup_name=request.form["startup_name"].strip(),
                 founder_name=request.form["founder_name"].strip(),
                 photo_filename=photo_filename,
                 village=request.form["village"].strip(),
                 address=request.form["address"].strip(),
-                date_visited=parse_date(request.form["date_visited"]),
-                time_visited=parse_time(request.form["time_visited"]),
+                date_visited=visit_date,
+                time_visited=visit_time,
                 technical_support=request.form["technical_support"].strip(),
                 statement_before=request.form["statement_before"].strip(),
                 before_tech_support=request.form["before_tech_support"].strip(),

@@ -1,8 +1,8 @@
 # Technical Support for Rural Startups — CEP Report Web App
 
 A Flask + MySQL web application presenting a Community Engagement Program (CEP)
-report documenting technical support visits to micro-enterprises in villages
-near Bhiwandi, Maharashtra.
+report documenting technical support visits to micro-enterprises near
+Kolhapur, Maharashtra.
 
 ## Stack
 - **Backend:** Flask, Flask-SQLAlchemy
@@ -14,11 +14,11 @@ near Bhiwandi, Maharashtra.
 cep_app/
 ├── app.py                 # Routes, config, DB bootstrap
 ├── models.py               # SQLAlchemy Startup model
-├── schema.sql               # Standalone MySQL schema
+├── schema.sql               # Standalone MySQL schema + seed data
 ├── requirements.txt
 ├── static/
 │   ├── css/style.css        # Signature "field-notebook stamp" styling
-│   ├── uploads/              # Uploaded photos
+│   ├── uploads/              # Uploaded + seed photos
 │   └── CEP_Report_Technical_Support_Rural_Startups.pdf
 └── templates/
     ├── base.html            # Navbar, footer, Tailwind config
@@ -30,14 +30,16 @@ cep_app/
 
 ## 1. Set up MySQL
 
-Create the database and table:
+Create the database and table (this also inserts the two baseline visit
+records — skip the seed rows here if you'd rather let the app seed them
+automatically on first run):
 
 ```bash
 mysql -u root -p < schema.sql
 ```
 
-Or just create the empty database and let `app.py` create the table
-automatically on first run:
+Or just create the empty database and let `app.py` create the table and
+seed data on first run:
 
 ```sql
 CREATE DATABASE rural_startups_db CHARACTER SET utf8mb4;
@@ -65,10 +67,9 @@ pip install -r requirements.txt
 python3 app.py
 ```
 
-The app creates the table (if it doesn't already exist) on first run,
-then starts on `http://127.0.0.1:5000`. The dashboard and field-work
-pages start empty until you add real visit records through the
-`/field-work` form.
+The app creates the table (if it doesn't already exist) and seeds the two
+baseline field-visit records automatically on first run, then starts on
+`http://127.0.0.1:5000`.
 
 ## Routes
 
