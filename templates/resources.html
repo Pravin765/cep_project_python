@@ -6,19 +6,28 @@
 
   <p class="font-mono text-xs uppercase tracking-wider text-rust mb-3">Resource Library</p>
   <h1 class="font-display text-3xl sm:text-4xl mb-3">What we actually taught</h1>
-  <p class="text-charcoal/70 max-w-2xl mb-12">The four intervention areas covered on every visit, followed by the report's closing summary.</p>
+  <p class="text-charcoal/70 max-w-2xl mb-3">The four intervention areas covered on every visit, followed by the report's closing summary.</p>
+  <p class="text-xs text-charcoal/50 mb-12"><sup class="text-red-600 font-bold">*</sup> marks required material.</p>
 
   <!-- ===================== INTERVENTION AREA CARDS ===================== -->
   <div class="grid sm:grid-cols-2 gap-6 mb-16">
 
-    <div class="notebook-card rounded-lg p-6">
+    <div class="notebook-card rounded-lg p-6 flex flex-col">
       <div class="visit-stamp mb-5"><span class="stamp-month">Area</span><span class="stamp-day">01</span></div>
       <h3 class="font-display text-xl mb-2">Storage &amp; Inventory Management</h3>
-      <p class="text-charcoal/75 leading-relaxed text-sm">
+      <p class="text-charcoal/75 leading-relaxed text-sm mb-5">
         Simple spreadsheet tracking for sales, expenses, and raw materials —
         set up so an owner with no spreadsheet background could keep updating
         it alone after we left.
       </p>
+      <a href="{{ url_for('static', filename='resources/Automated_Inventory_Management.xlsx') }}"
+         download
+         class="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-rust hover:text-rust/70 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
+        </svg>
+        Download Inventory Template (.xlsx)
+      </a>
     </div>
 
     <div class="notebook-card rounded-lg p-6">
@@ -31,13 +40,21 @@
       </p>
     </div>
 
-    <div class="notebook-card rounded-lg p-6">
+    <div class="notebook-card rounded-lg p-6 flex flex-col">
       <div class="visit-stamp mb-5"><span class="stamp-month">Area</span><span class="stamp-day">03</span></div>
-      <h3 class="font-display text-xl mb-2">Cybersecurity Awareness</h3>
-      <p class="text-charcoal/75 leading-relaxed text-sm">
+      <h3 class="font-display text-xl mb-2">Cybersecurity Awareness<sup class="text-red-600 font-bold ml-0.5" title="Required">*</sup></h3>
+      <p class="text-charcoal/75 leading-relaxed text-sm mb-5">
         Modules covering OTP scam recognition, safe app-lock practices, and
         the specific risks of using public Wi-Fi for payments.
       </p>
+      <a href="{{ url_for('static', filename='resources/cyber_security.pptx') }}"
+         download
+         class="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-rust hover:text-rust/70 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
+        </svg>
+        Download Cybersecurity Deck (.pptx)
+      </a>
     </div>
 
     <div class="notebook-card rounded-lg p-6">
