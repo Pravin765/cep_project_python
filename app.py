@@ -158,6 +158,57 @@ def resources():
 
 
 # ------------------------------------------------------------------
+# Product demos
+# ------------------------------------------------------------------
+def _demo_catalogue():
+    return [
+        {
+            "slug": "auto-crop",
+            "number": "01",
+            "title": "Auto Face & Shoulder Cropping",
+            "tagline": "RetinaFace + Pillow",
+            "description": "A web app that detects every face, infers the shoulder line, and auto-crops to standard ID / portrait ratios.",
+            "stack": ["Python", "RetinaFace", "Pillow", "Flask"],
+            "video": os.environ.get("DEMO_VIDEO_CROP_URL",
+                url_for("static", filename="demos/auto_crop.mp4")),
+            "poster": url_for("static", filename="demos/auto_crop_poster.jpg"),
+        },
+        {
+            "slug": "bulk-bg-removal",
+            "number": "02",
+            "title": "Bulk Background Removal",
+            "tagline": "withoutbg model",
+            "description": "Drops the background from every photo in a folder in one pass.",
+            "stack": ["Python", "withoutbg", "Pillow"],
+            "video": os.environ.get("DEMO_VIDEO_BG_URL",
+                url_for("static", filename="demos/withoutbg_bulk_demo.mp4")),
+            "poster": url_for("static", filename="demos/withoutbg_bulk_poster.jpg"),
+        },
+        {
+            "slug": "dslr-renamer",
+            "number": "03",
+            "title": "Smart Camera Renamer",
+            "tagline": "DSLR-style sequential naming",
+            "description": "Android companion app that captures a photo and renames it with a DSLR-style serial.",
+            "stack": ["Android", "Kotlin", "EXIF"],
+            "video": os.environ.get("DEMO_VIDEO_RENAMER_URL",
+                url_for("static", filename="demos/dslr_renamer_demo.mp4")),
+            "poster": url_for("static", filename="demos/dslr_renamer_poster.jpg"),
+        },
+    ]
+
+
+@app.route("/demos")
+def demos():
+    return render_template(
+        "demos.html",
+        demos=_demo_catalogue(),
+        site_image=os.environ.get("DEMO_SITE_IMAGE_URL",
+            url_for("static", filename="demos/class_mgmt_site.png")),
+    )
+
+
+# ------------------------------------------------------------------
 # App bootstrap
 # ------------------------------------------------------------------
 def init_db():
