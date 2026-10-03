@@ -13,9 +13,9 @@
   <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
     {% for s in startups %}
     <div class="notebook-card rounded-lg overflow-hidden flex flex-col">
-      <div class="h-44 bg-indigo-900/5 overflow-hidden">
+      <div class="aspect-[4/3] bg-indigo-900/5 flex items-center justify-center overflow-hidden">
         {% if s.photo_filename %}
-        <img src="{{ s.photo_filename if s.photo_filename.startswith('http') else url_for('static', filename='uploads/' ~ s.photo_filename) }}" alt="{{ s.startup_name }}" class="w-full h-full object-cover">
+        <img src="{{ s.photo_filename if s.photo_filename.startswith('http') else url_for('static', filename='uploads/' ~ s.photo_filename) }}" alt="{{ s.startup_name }}" class="w-full h-full object-contain">
         {% else %}
         <div class="w-full h-full flex items-center justify-center text-charcoal/30 font-mono text-xs">No photo on file</div>
         {% endif %}
