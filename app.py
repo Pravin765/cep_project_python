@@ -13,7 +13,7 @@ import cloudinary
 import cloudinary.uploader
 from flask import (
     Flask, render_template, request, redirect,
-    url_for, flash
+    url_for, flash, send_from_directory, abort
 )
 from werkzeug.utils import secure_filename
 from sqlalchemy import func, text
@@ -212,6 +212,61 @@ def demos():
         site_image=os.environ.get("DEMO_SITE_IMAGE_URL",
             url_for("static", filename="demos/class_mgmt_site.png")),
     )
+
+
+# ------------------------------------------------------------------
+# Report download
+# ------------------------------------------------------------------
+REPORT_FILENAME = "CEP_Report_Technical_Support_Rural_Startups.pdf"
+
+
+def _report_exists():
+    return os.path.exists(os.path.join(BASE_DIR, "static", REPORT_FILENAME))
+
+
+@app.route("/report")
+def report():
+    """Report page: the PDF is shown in the browser."""
+    return render_template("report.html", available=_report_exists())
+
+
+@app.route("/report/view")
+def view_report():
+    """Serve the PDF inline so the browser's PDF viewer can display it."""
+    if not _report_exists():
+        abort(404)
+    return send_from_directory(os.path.join(BASE_DIR, "static"), REPORT_FILENAME,
+                               as_attachment=False, mimetype="application/pdf")
+
+
+def _report_path_ok():
+    return os.path.exists(os.path.join(BASE_DIR, "static", REPORT_FILENAME))
+
+
+@app.route("/report")
+def report():
+    """Show the CEP report PDF inside the browser."""
+    if not _report_path_ok():
+        abort(404)
+    return render_template("report.html")
+
+
+@app.route("/report/file")
+def report_file():
+    """The PDF itself, served inline so browsers render it (used by /report)."""
+    if not _report_path_ok():
+        abort(404)
+    return send_from_directory(os.path.join(BASE_DIR, "static"), REPORT_FILENAME,
+                               as_attachment=False, mimetype="application/pdf")
+
+
+@app.route("/report/download")
+def download_report():
+    """Serve the final CEP report PDF as a download."""
+    if not _report_path_ok():
+        abort(404)
+    return send_from_directory(os.path.join(BASE_DIR, "static"), REPORT_FILENAME,
+                               as_attachment=True)
 
 
 # ------------------------------------------------------------------
