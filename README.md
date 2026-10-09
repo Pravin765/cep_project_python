@@ -24,8 +24,7 @@ cep_app/
     ├── base.html            # Navbar, footer, Tailwind config
     ├── home.html
     ├── dashboard.html
-    ├── field_work.html
-    └── resources.html
+    └── field_work.html
 ```
 
 ## 1. Set up MySQL
@@ -77,7 +76,8 @@ pages start empty until you add real visit records through the
 | `/` , `/home` | GET | Project overview, objectives, team, methodology |
 | `/dashboard` | GET | Metrics + full data table of every visit |
 | `/field-work` | GET, POST | Card grid of visits; POST adds a new record with photo upload |
-| `/resources` | GET | Intervention areas + downloadable report PDF |
+| `/demos` | GET | Embedded video demos of the software tools |
+| `/healthz` | GET | Health check (touches the DB); used for keep-warm pings |
 
 Uploaded photos are saved to `static/uploads/`.
 
@@ -85,6 +85,3 @@ Uploaded photos are saved to `static/uploads/`.
 - This was smoke-tested end-to-end against SQLite during development (all
   five routes plus the field-work form submission); swap in your MySQL
   credentials as above for production use — no code changes needed.
-- The "Download CEP Report" button on the Resources page links to a
-  companion PDF summary already included at
-  `static/CEP_Report_Technical_Support_Rural_Startups.pdf`.

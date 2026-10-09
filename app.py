@@ -4,6 +4,9 @@ Flask + Flask-SQLAlchemy (MySQL via PyMySQL) backend.
 """
 
 import os
+import threading
+import time
+import urllib.request
 from datetime import datetime, date, time as dtime
 
 import cloudinary
@@ -13,7 +16,7 @@ from flask import (
     url_for, flash
 )
 from werkzeug.utils import secure_filename
-from sqlalchemy import func
+from sqlalchemy import func, text
 
 from models import db, Startup
 
@@ -43,8 +46,16 @@ DB_SSL_REQUIRED = os.environ.get("DB_SSL_MODE", "REQUIRED").upper() not in ("", 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
     f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 )
+_engine_options = {
+    # Test a pooled connection before using it and recycle idle ones, so the
+    # first request after a quiet period never hits a dead MySQL socket.
+    "pool_pre_ping": True,
+    "pool_recycle": 280,
+    "connect_args": {"connect_timeout": 10},
+}
 if DB_SSL_REQUIRED:
-    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"connect_args": {"ssl": {}}}
+    _engine_options["connect_args"]["ssl"] = {}
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = _engine_options
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024  # 8 MB max upload
@@ -152,11 +163,6 @@ def field_work():
     return render_template("field_work.html", startups=startups)
 
 
-@app.route("/resources")
-def resources():
-    return render_template("resources.html")
-
-
 # ------------------------------------------------------------------
 # Product demos
 # ------------------------------------------------------------------
@@ -209,12 +215,55 @@ def demos():
 
 
 # ------------------------------------------------------------------
+# Health check (for uptime pingers / keep-warm)
+# ------------------------------------------------------------------
+@app.route("/healthz")
+def healthz():
+    """Cheap endpoint that also touches the DB, so one ping keeps both the
+    web dyno and the MySQL connection warm."""
+    try:
+        db.session.execute(text("SELECT 1"))
+        return "ok", 200
+    except Exception:
+        return "db unavailable", 503
+
+
+# ------------------------------------------------------------------
+# Keep-alive (prevents Render free-tier spin-down)
+# ------------------------------------------------------------------
+def _keep_alive(url: str, interval: int = 600):
+    """Ping our own public URL every `interval` seconds. Render spins a free
+    web service down after ~15 min without inbound traffic; a request that
+    arrives via the public URL counts as traffic."""
+    while True:
+        time.sleep(interval)
+        try:
+            urllib.request.urlopen(url, timeout=20).read()
+        except Exception:
+            pass  # never let a failed ping kill the thread
+
+
+# Render sets RENDER_EXTERNAL_URL automatically. Locally it's absent, so no
+# thread is started during development.
+_KEEP_ALIVE_URL = os.environ.get("KEEP_ALIVE_URL") or (
+    os.environ.get("RENDER_EXTERNAL_URL", "").rstrip("/") + "/healthz"
+    if os.environ.get("RENDER_EXTERNAL_URL") else ""
+)
+if _KEEP_ALIVE_URL and os.environ.get("KEEP_ALIVE", "1") != "0":
+    threading.Thread(target=_keep_alive, args=(_KEEP_ALIVE_URL,), daemon=True).start()
+
+
+# ------------------------------------------------------------------
 # App bootstrap
 # ------------------------------------------------------------------
 def init_db():
-    """Create tables (if needed)."""
-    with app.app_context():
-        db.create_all()
+    """Create tables (if needed). A slow or sleeping database must not
+    stop the web process from booting, so failures are logged, not raised."""
+    try:
+        with app.app_context():
+            db.create_all()
+    except Exception as exc:
+        app.logger.warning("init_db skipped: %s", exc)
 
 
 
