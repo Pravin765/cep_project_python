@@ -220,25 +220,6 @@ def demos():
 REPORT_FILENAME = "CEP_Report_Technical_Support_Rural_Startups.pdf"
 
 
-def _report_exists():
-    return os.path.exists(os.path.join(BASE_DIR, "static", REPORT_FILENAME))
-
-
-@app.route("/report")
-def report():
-    """Report page: the PDF is shown in the browser."""
-    return render_template("report.html", available=_report_exists())
-
-
-@app.route("/report/view")
-def view_report():
-    """Serve the PDF inline so the browser's PDF viewer can display it."""
-    if not _report_exists():
-        abort(404)
-    return send_from_directory(os.path.join(BASE_DIR, "static"), REPORT_FILENAME,
-                               as_attachment=False, mimetype="application/pdf")
-
-
 def _report_path_ok():
     return os.path.exists(os.path.join(BASE_DIR, "static", REPORT_FILENAME))
 
