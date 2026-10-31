@@ -52,7 +52,6 @@
       <nav class="hidden md:flex items-center gap-1 font-medium text-sm">
         <a href="{{ url_for('home') }}" class="px-3.5 py-2 rounded-md text-indigo-100 hover:text-white hover:bg-white/10 transition-colors {% if request.endpoint == 'home' %}text-white bg-white/10{% endif %}">Home</a>
         <a href="{{ url_for('dashboard') }}" class="px-3.5 py-2 rounded-md text-indigo-100 hover:text-white hover:bg-white/10 transition-colors {% if request.endpoint == 'dashboard' %}text-white bg-white/10{% endif %}">Dashboard</a>
-        <a href="{{ url_for('field_work') }}" class="px-3.5 py-2 rounded-md text-indigo-100 hover:text-white hover:bg-white/10 transition-colors {% if request.endpoint == 'field_work' %}text-white bg-white/10{% endif %}">Field Work</a>
         <a href="{{ url_for('demos') }}" class="px-3.5 py-2 rounded-md text-indigo-100 hover:text-white hover:bg-white/10 transition-colors {% if request.endpoint == 'demos' %}text-white bg-white/10{% endif %}">Demos</a>
         <a href="{{ url_for('report') }}" class="px-3.5 py-2 rounded-md text-indigo-100 hover:text-white hover:bg-white/10 transition-colors {% if request.endpoint == 'report' %}text-white bg-white/10{% endif %}">Report</a>
       </nav>
@@ -69,7 +68,6 @@
     <nav id="mobileMenu" class="hidden md:hidden pb-4 flex flex-col gap-1 font-medium text-sm">
       <a href="{{ url_for('home') }}" class="px-3.5 py-2 rounded-md text-indigo-100 hover:text-white hover:bg-white/10">Home</a>
       <a href="{{ url_for('dashboard') }}" class="px-3.5 py-2 rounded-md text-indigo-100 hover:text-white hover:bg-white/10">Dashboard</a>
-      <a href="{{ url_for('field_work') }}" class="px-3.5 py-2 rounded-md text-indigo-100 hover:text-white hover:bg-white/10">Field Work</a>
       <a href="{{ url_for('demos') }}" class="px-3.5 py-2 rounded-md text-indigo-100 hover:text-white hover:bg-white/10">Demos</a>
       <a href="{{ url_for('report') }}" class="px-3.5 py-2 rounded-md text-indigo-100 hover:text-white hover:bg-white/10">Report</a>
     </nav>
@@ -106,7 +104,6 @@
       <ul class="space-y-1.5">
         <li><a href="{{ url_for('home') }}" class="hover:text-white">About the Project</a></li>
         <li><a href="{{ url_for('dashboard') }}" class="hover:text-white">Visit Dashboard</a></li>
-        <li><a href="{{ url_for('field_work') }}" class="hover:text-white">Field Work Log</a></li>
         <li><a href="{{ url_for('demos') }}" class="hover:text-white">Product Demos</a></li>
         <li><a href="{{ url_for('report') }}" class="hover:text-white">Project Report</a></li>
       </ul>
