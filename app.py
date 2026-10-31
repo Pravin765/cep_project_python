@@ -110,59 +110,6 @@ def dashboard():
     )
 
 
-@app.route("/field-work", methods=["GET", "POST"])
-def field_work():
-    if request.method == "POST":
-        photo_filename = None
-        photo = request.files.get("photo_with_members")
-        if photo and photo.filename and allowed_file(photo.filename):
-            if USE_CLOUDINARY:
-                # Cloudinary persists the file and hands back a permanent
-                # HTTPS URL — that URL is what we store, straight into the
-                # photo_filename column.
-                upload_result = cloudinary.uploader.upload(
-                    photo, folder="cep_rural_startups"
-                )
-                photo_filename = upload_result["secure_url"]
-            else:
-                # Local-disk fallback for development without Cloudinary
-                # configured. Not persistent on Render.
-                safe_name = secure_filename(photo.filename)
-                base, ext = os.path.splitext(safe_name)
-                candidate = safe_name
-                counter = 1
-                while os.path.exists(os.path.join(app.config["UPLOAD_FOLDER"], candidate)):
-                    candidate = f"{base}_{counter}{ext}"
-                    counter += 1
-                photo.save(os.path.join(app.config["UPLOAD_FOLDER"], candidate))
-                photo_filename = candidate
-
-        try:
-            new_entry = Startup(
-                startup_name=request.form["startup_name"].strip(),
-                founder_name=request.form["founder_name"].strip(),
-                photo_filename=photo_filename,
-                village=request.form["village"].strip(),
-                address=request.form["address"].strip(),
-                date_visited=parse_date(request.form["date_visited"]),
-                time_visited=parse_time(request.form["time_visited"]),
-                technical_support=request.form["technical_support"].strip(),
-                statement_before=request.form["statement_before"].strip(),
-                before_tech_support=request.form["before_tech_support"].strip(),
-                after_tech_support=request.form["after_tech_support"].strip(),
-            )
-            db.session.add(new_entry)
-            db.session.commit()
-            flash(f"Field record for {new_entry.startup_name} saved successfully.", "success")
-        except (KeyError, ValueError) as exc:
-            flash(f"Could not save record — please check the form fields ({exc}).", "error")
-
-        return redirect(url_for("field_work"))
-
-    startups = Startup.query.order_by(Startup.date_visited.desc()).all()
-    return render_template("field_work.html", startups=startups)
-
-
 # ------------------------------------------------------------------
 # Product demos
 # ------------------------------------------------------------------
